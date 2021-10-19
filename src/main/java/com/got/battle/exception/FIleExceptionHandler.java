@@ -14,6 +14,6 @@ public class FIleExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public ResponseEntity<ResultDTO<?>> handleMaxSizeException(MaxUploadSizeExceededException exc) {
-		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResultDTO<>("File too large!", false));
+		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResultDTO<>("File is too large!", false));
 	}
 }

@@ -11,7 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.got.battle.bean.BaseDTO;
 import com.got.battle.model.Battles;
+import com.got.battle.model.Commander;
+import com.got.battle.model.King;
 import com.got.battle.model.Location;
+import com.got.battle.model.Year;
 import com.got.battle.utils.CSVDataHandler;
 
 @Service
@@ -55,6 +58,31 @@ public class BattleService extends BaseDTO {
 	}
 
 	public Object getBattleByNumber(String number) {
-		return battlesRepository.findByBattleNumber(number);
+		Battles battle = battlesRepository.findByBattleNumber(number);
+		HashMap<String, Object> hashMap = new HashMap<>();
+		if (battle != null) {
+			King attckerKing = kingRepository.findById(battle.getAttackerKingId()).get();
+			King defnderKing = kingRepository.findById(battle.getDefenderKingId()).get();
+			Commander attackerCommander = commanderRepository.findById(battle.getAttackerCommanderId()).get();
+			Commander defenderCommander = commanderRepository.findById(battle.getAttackerCommanderId()).get();
+			Year year = yearRepository.findById(battle.getYearId()).get();
+			hashMap.put("id", battle.getId());
+			hashMap.put("name", battle.getName());
+			hashMap.put("battleNumber", battle.getBattleNumber());
+			hashMap.put("attackerOutcome", battle.getAttackerOutcome());
+			hashMap.put("majorDeath", battle.getMajorDeath());
+			hashMap.put("majorCapture", battle.getMajorCapture());
+			hashMap.put("attackerSize", battle.getAttackerSize());
+			hashMap.put("defenderSize", battle.getDefenderSize());
+			hashMap.put("summer", battle.getSummer());
+			hashMap.put("note", battle.getNote());
+			hashMap.put("attackerKing", attckerKing.getKing());
+			hashMap.put("defenderKingId", defnderKing.getKing());
+			hashMap.put("attackerCommander", attackerCommander.getCommander());
+			hashMap.put("defenderCommander", defenderCommander.getCommander());
+			hashMap.put("year", year.getYear());
+			hashMap.put("location", battle.getLocation());
+		}
+		return hashMap;
 	}
 }

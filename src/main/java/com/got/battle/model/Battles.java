@@ -3,6 +3,7 @@ package com.got.battle.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class Battles {
 	private String attackerSize;
 	private String defenderSize;
 	private String summer;
+	@Column(columnDefinition = "TEXT")
 	private String note;
 	private Long attackerKingId;
 	private Long defenderKingId;
