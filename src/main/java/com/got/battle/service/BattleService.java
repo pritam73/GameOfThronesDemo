@@ -77,7 +77,7 @@ public class BattleService extends BaseDTO {
 			hashMap.put("summer", battle.getSummer());
 			hashMap.put("note", battle.getNote());
 			hashMap.put("attackerKing", attckerKing.getKing());
-			hashMap.put("defenderKingId", defnderKing.getKing());
+			hashMap.put("defenderKing", defnderKing.getKing());
 			hashMap.put("attackerCommander", attackerCommander.getCommander());
 			hashMap.put("defenderCommander", defenderCommander.getCommander());
 			hashMap.put("year", year.getYear());

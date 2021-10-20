@@ -43,6 +43,7 @@ public class CSVDataHandler extends BaseDTO {
 			List<Battles> battleList = new ArrayList<Battles>();
 			Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 			for (CSVRecord csvRecord : csvRecords) {
+
 				Long yearId = null;
 				Year existYear = yearRepository.findByYear(csvRecord.get("year"));
 				if (existYear != null) {
@@ -53,6 +54,7 @@ public class CSVDataHandler extends BaseDTO {
 					yearRepository.save(year);
 					yearId = year.getId();
 				}
+
 				Long batTypeId = null;
 				BattleType existBatType = battleTypeRepository.findByBattleType(csvRecord.get("battle_type"));
 				if (existBatType != null) {
@@ -63,6 +65,7 @@ public class CSVDataHandler extends BaseDTO {
 					battleTypeRepository.save(batType);
 					batTypeId = batType.getId();
 				}
+
 				Long attackKingId = null;
 				Long defKingId = null;
 				King existAttackKing = kingRepository.findByKing(csvRecord.get("attacker_king"));
@@ -74,6 +77,7 @@ public class CSVDataHandler extends BaseDTO {
 					kingRepository.save(attackKing);
 					attackKingId = attackKing.getId();
 				}
+
 				King existDefKing = kingRepository.findByKing(csvRecord.get("defender_king"));
 				if (existDefKing != null) {
 					defKingId = existDefKing.getId();
@@ -83,6 +87,7 @@ public class CSVDataHandler extends BaseDTO {
 					kingRepository.save(defKing);
 					defKingId = defKing.getId();
 				}
+
 				Long attackCmdId = null;
 				Commander existAttCmd = commanderRepository.findByCommander(csvRecord.get("attacker_commander"));
 				if (existAttCmd != null) {
@@ -93,6 +98,7 @@ public class CSVDataHandler extends BaseDTO {
 					commanderRepository.save(attackCmd);
 					attackCmdId = attackCmd.getId();
 				}
+
 				Commander existDefCmd = commanderRepository.findByCommander(csvRecord.get("attacker_commander"));
 				Long defCmdId = null;
 				if (existDefCmd != null) {
@@ -103,6 +109,7 @@ public class CSVDataHandler extends BaseDTO {
 					commanderRepository.save(defCmd);
 					defCmdId = defCmd.getId();
 				}
+
 				Region existRegion = regionRepository.findByRegion(csvRecord.get("region"));
 				Region regionId = null;
 				if (existRegion != null) {
@@ -130,12 +137,18 @@ public class CSVDataHandler extends BaseDTO {
 					}
 				}
 
-				Battles battle = new Battles(csvRecord.get("name"), csvRecord.get("battle_number"),
-						csvRecord.get("attacker_outcome"), csvRecord.get("major_death"), csvRecord.get("major_capture"),
-						csvRecord.get("attacker_size"), csvRecord.get("defender_size"), csvRecord.get("summer"),
-						csvRecord.get("note"), attackKingId, defKingId, attackCmdId, defCmdId, locationList,
-						regionId.getId(), batTypeId, yearId);
-				battleList.add(battle);
+				Battles existBattle = battlesRepository.findByBattleNumber(csvRecord.get("battle_number"));
+				if (existBattle != null) {
+					// Do Nothing
+				} else {
+					Battles battle = new Battles(csvRecord.get("name"), csvRecord.get("battle_number"),
+							csvRecord.get("attacker_outcome"), csvRecord.get("major_death"),
+							csvRecord.get("major_capture"), csvRecord.get("attacker_size"),
+							csvRecord.get("defender_size"), csvRecord.get("summer"), csvRecord.get("note"),
+							attackKingId, defKingId, attackCmdId, defCmdId, locationList, regionId.getId(), batTypeId,
+							yearId);
+					battleList.add(battle);
+				}
 			}
 			battlesRepository.saveAll(battleList);
 		} catch (IOException e) {
