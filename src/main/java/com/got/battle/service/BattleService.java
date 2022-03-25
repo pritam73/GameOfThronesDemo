@@ -85,4 +85,8 @@ public class BattleService extends BaseDTO {
 		}
 		return hashMap;
 	}
+
+	public Object userDetails() {
+		return kingRepository.findAll();
+	}
 }
